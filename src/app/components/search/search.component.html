@@ -1,0 +1,26 @@
+<div *ngIf="!topics" class="col-lg-12 mt-3 d-flex justify-content-center align-items-center" style="height:100vh;">
+    <img src="/assets/preloader.gif" alt="cargando">
+</div>
+
+
+<div *ngIf="topics" class="col-lg-12 mt-3">
+    <h1>Coincidencias con tu busqueda</h1>
+    <hr />
+
+
+    <ul class="list-group list-topics">
+        <li class="list-group-item" *ngFor="let topic of topics">
+            <h4>
+                <a [routerLink]="['/tema',topic._id]">{{topic.title}}</a>
+            </h4>
+            <span *ngIf="topic.user" class="badge text-bg-primary me-3">
+                {{topic.user.name+' '+topic.user.surname}}
+            </span>
+            <span *ngIf="topic.date" class="badge text-bg-secondary me-3">
+                {{topic.date | amLocale:'es' | amDateFormat:'LL' }}
+            </span>
+            <a [routerLink]="['/inicio']" class="btn btn-sm btn-success ">Leer</a>
+        </li>
+    </ul>
+
+</div>

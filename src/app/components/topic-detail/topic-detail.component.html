@@ -1,0 +1,88 @@
+<div class="col-lg-12 topic-box">
+    <div *ngIf="topic" class="topic-data col-lg-7 float-left">
+        <h2 *ngIf="topic.title" class="mt-3">{{topic.title}}</h2>
+        <span *ngIf="topic.user" class="badge text-bg-primary me-3">
+            {{topic.user.name+' '+topic.user.surname}}
+        </span>
+        <span *ngIf="topic.lang" class="badge text-bg-warning me-3">
+            {{topic.lang}}
+        </span>
+        <span *ngIf="topic.date" class="badge text-bg-secondary me-3">
+            {{topic.date | amLocale:'es' | amDateFormat:'LL' }}
+        </span>
+        <hr>
+        <p *ngIf="topic.content" class="mt-2">
+            {{topic.content}}
+        </p>
+        <p *ngIf="topic.code" class="mt-2">
+            <ngx-highlight-js lang="{{topic.lang}}" [code]="topic.code"></ngx-highlight-js>
+        </p>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div *ngIf="identity && identity.name" class="comment-box mt-4">
+        <div class="alert alert-success mt-3" *ngIf="status =='success'">
+            Nuevo comentario creado con exito
+        </div>
+        <div class="alert alert-danger mt-3" *ngIf="status =='error'">
+            Error al crear comentario
+        </div>
+        <h4>Comentarios {{'('+cantComentarios+')'}}</h4>
+        <hr>
+        <form *ngIf="identity" #formComment="ngForm" (ngSubmit)="onSubmit(formComment)">
+            <div class="form-group mb-3">
+                <label for="content">Pon tu pregunta o contenido</label>
+                <textarea type="text" name="content" #content="ngModel" [(ngModel)]="comment.content" required
+                    class="form-control"></textarea>
+                <small *ngIf="!content.valid && content.touched" class="invalid-feedback d-block">
+                    El contenido no es valido
+                </small>
+            </div>
+            <button class="btn btn-success" type="submit" [disabled]="formComment.invalid">Comentar</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div *ngIf="cantComentarios != null">
+        <div class="comments" *ngFor="let comentario of topic.comments">
+            <h6 class="mb-5">{{comentario.content}}</h6>
+            <span *ngIf="comentario.user.name" class="badge text-bg-primary me-3">
+                {{comentario.user.name+' '+comentario.user.surname}}
+            </span>
+            <span *ngIf="comentario.date" class="badge text-bg-secondary me-3">
+                {{comentario.date | amLocale:'es' | amTimeAgo }}
+            </span>
+    
+    
+            <button *ngIf="identity && comentario.user._id == identity._id" type="button" class="btn btn-danger float-end" data-bs-toggle="modal" [attr.data-bs-target]="'#modal'+comentario._id"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                    </svg>
+            </button>
+            <div class="modal fade" id="{{'modal'+comentario._id}}" data-backdrop="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar comentario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Esta seguro que desea eliminar este comentario?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteComment(comentario._id)">Eliminar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="mb-3">
+        </div>
+    </div>
+
+</div>

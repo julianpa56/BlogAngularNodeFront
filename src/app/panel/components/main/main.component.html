@@ -1,0 +1,16 @@
+<div class="d-flex align-items-left mt-4 ">
+    <div class="nav col-lg-4 flex-column nav-pills me-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <h3>Panel de usuario</h3>
+        <hr>
+        <button class="nav-link text-start active" id="v-pills-home-tab" data-bs-toggle="pill" type="button"
+            aria-selected="true" [routerLink]="['listado']">Mis temas</button>
+        <button class="nav-link text-start" id="v-pills-profile-tab" data-bs-toggle="pill" type="button"
+            aria-selected="false" [routerLink]="['crear']">Crear tema</button>
+        <button class="nav-link text-start" id="v-pills-disabled-tab" data-bs-toggle="pill" type="button"
+            aria-selected="false" [routerLink]="['/ajustes']">Ajustes</button>
+    </div>
+    <div class="col-lg-8 me-3">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>

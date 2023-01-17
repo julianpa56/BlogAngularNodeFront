@@ -1,0 +1,57 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/inicio']">NG Foro</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" [routerLink]="['/inicio']">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/temas']">Ver temas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/crear']">Crear temas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/usuarios']">Compañeros</a>
+          </li>
+          <form class="d-flex" role="search" #searchForm="ngForm">
+            <input class="form-control me-2" type="search" placeholder="¿Qué estás buscando?" aria-label="Search" name="busqueda" #busqueda="ngModel" [(ngModel)]="search">
+            <button class="btn btn-outline-success" type="submit" (click)="searchOnTopics()">Buscar</button>
+          </form>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+          <li *ngIf="identity == null" class="nav-item">
+            <a class="nav-link" [routerLink]="['/registro']">Registrate</a>
+          </li>
+          <li *ngIf="identity == null" class="nav-item">
+            <a class="nav-link" [routerLink]="['/login']">Login</a>
+          </li>
+          <img *ngIf="identity && identity.image != null" class="img-avatar me-3" src="{{url+'avatar/'+ identity.image}}" alt="avatar">
+          <img *ngIf="identity && identity.image == null" class="img-avatar me-3" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPTUAjdwL-NGBoQpbNQMVeHv63keytXAC8oQ&usqp=CAU" alt="avatar">
+          <li *ngIf="identity != null" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{identity.name + ' ' + identity.surname}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" [routerLink]="['/panel']">Panel de usuario</a></li>
+              <li><a class="dropdown-item" [routerLink]="['/perfil',identity._id]">Mi perfil</a></li>
+              <li><a class="dropdown-item" [routerLink]="['/ajustes']">Ajustes</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" (click)="logout()">Cerrar Sesion</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido -->
+
+  <router-outlet></router-outlet>
+  
+</div>
